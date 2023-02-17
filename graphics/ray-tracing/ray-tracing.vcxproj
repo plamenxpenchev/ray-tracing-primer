@@ -151,7 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\vec3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\color.hpp" />
+    <ClInclude Include="include\vec3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
