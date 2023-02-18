@@ -18,17 +18,25 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 
 	vec3 oc = r.origin() - center;
 
-	auto a = dot(r.direction(), r.direction());
-	auto b = 2.0 * dot(oc, r.direction());
-	auto c = dot(oc, oc) - radius * radius;
+	/*
+		For any vector V = [v1, v2, ...] its length is ||V|| = sqrt(v1*v1 + v2*v2 + ...).
+		Naturally, V*V = ||V||^2
+	*/
+	auto a = r.direction().length_squared(); // equivalent to a = dot(r.direction(), r.direction());
+	auto half_b = dot(oc, r.direction()); // where b = 2.0 * dot(oc, r.direction());
+	auto c = oc.length_squared() - radius * radius; // equivalent to c = dot(oc, oc) - radius * radius
 
-	auto discriminant = b * b - 4 * a * c;
+	/*
+		Using half_b, we can extract the 4 from the discriminant square root term
+		in determining the roots. Also then we reduce the 2 from the fraction to further simplify.
+	*/
+	auto discriminant = half_b * half_b - a * c;
 	if (discriminant < 0) {
 		return -1.0;
 	}
 	else {
 		// Use the closest hit point, the smaller root
-		return (-b - sqrt(discriminant)) / (2.0 * a);
+		return (-half_b - sqrt(discriminant)) / a;
 	}
 }
 
