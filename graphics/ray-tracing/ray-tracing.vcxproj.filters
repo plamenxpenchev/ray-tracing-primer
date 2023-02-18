@@ -24,12 +24,18 @@
     <ClCompile Include="src\color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vec3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\color.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
