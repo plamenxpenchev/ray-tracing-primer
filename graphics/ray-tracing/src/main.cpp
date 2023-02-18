@@ -4,7 +4,35 @@
 #include "vec3.hpp"
 #include "color.hpp"
 
+/*
+	For a point P = [x, y, z] of a vector to lie on a sphere with center C = [Cx, Cy, Cz] and radius r,
+	it must satisfy (x - Cx)^2 + (y - Cy)^2 + (z - Cz)^2 = r^2.
+	In vector notation we can write that as (P-C) * (P-C) = r^2.
+
+	For a ray, defined as P(t) = A + tb, to hit the sphere it must satisfy the equation (P(t)-C) * (P(t)-C) = r^2.
+	t^2(b * b) + 2t(b * (A-C)) + (A-C) * (A-C) - r^2 = 0.
+	The vectors and r are constants and known, thus we can solve the quadratic for t, 
+	and determine if the ray intersects the sphere at two points (two roots, discriminant > 0).
+*/
+bool hit_sphere(const point3& center, double radius, const ray& r) {
+
+	vec3 oc = r.origin() - center;
+
+	auto a = dot(r.direction(), r.direction());
+	auto b = 2.0 * dot(oc, r.direction());
+	auto c = dot(oc, oc) - radius * radius;
+
+	auto discriminant = b * b - 4 * a * c;
+	return discriminant > 0;
+}
+
 color ray_color(const ray& r) {
+
+	// Color in red all points that intersect sphere
+	if (hit_sphere(point3(0, 0, -1), 0.5, r)) {
+
+		return color(1, 0, 0);
+	}
 
 	vec3 unit_direction = unit_vector(r.direction());
 	auto t = 0.5 * (unit_direction.y() + 1.0);
