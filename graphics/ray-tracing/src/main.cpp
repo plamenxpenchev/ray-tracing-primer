@@ -14,7 +14,7 @@
 	The vectors and r are constants and known, thus we can solve the quadratic for t, 
 	and determine if the ray intersects the sphere at two points (two roots, discriminant > 0).
 */
-bool hit_sphere(const point3& center, double radius, const ray& r) {
+double hit_sphere(const point3& center, double radius, const ray& r) {
 
 	vec3 oc = r.origin() - center;
 
@@ -23,19 +23,29 @@ bool hit_sphere(const point3& center, double radius, const ray& r) {
 	auto c = dot(oc, oc) - radius * radius;
 
 	auto discriminant = b * b - 4 * a * c;
-	return discriminant > 0;
+	if (discriminant < 0) {
+		return -1.0;
+	}
+	else {
+		// Use the closest hit point, the smaller root
+		return (-b - sqrt(discriminant)) / (2.0 * a);
+	}
 }
 
 color ray_color(const ray& r) {
 
-	// Color in red all points that intersect sphere
-	if (hit_sphere(point3(0, 0, -1), 0.5, r)) {
+	// Sphere with center [0, 0, -1] and radius 0.5
+	auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
+	if (t > 0.0) {
 
-		return color(1, 0, 0);
+		// For a sphere the outward surface normal vector 
+		// is in the direction of the hit point minus the center.
+		vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+		return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
 	}
 
 	vec3 unit_direction = unit_vector(r.direction());
-	auto t = 0.5 * (unit_direction.y() + 1.0);
+	t = 0.5 * (unit_direction.y() + 1.0);
 
 	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
