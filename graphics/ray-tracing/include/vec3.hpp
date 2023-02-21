@@ -113,3 +113,11 @@ inline vec3 random_unit_vector() {
 
 	return unit_vector(random_in_unit_sphere());
 }
+
+inline vec3 random_in_hemisphere(const vec3& normal) {
+
+	vec3 in_unit_sphere = random_in_unit_sphere();
+
+	// In the same hemisphere as the normal
+	return dot(in_unit_sphere, normal) > 0.0 ? in_unit_sphere : -in_unit_sphere;
+}

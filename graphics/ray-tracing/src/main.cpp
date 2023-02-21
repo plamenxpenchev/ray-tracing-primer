@@ -22,7 +22,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 		// Pick random points on the surface of the unit sphere, offset along the surface normal.
 		// We do this by picking random points in the unit sphere and normalizing them.
 		// This is done to achieve a Lambertian distribution.
-		point3 target = rec.p + rec.normal + random_unit_vector();
+		point3 target = rec.p + random_in_hemisphere(rec.normal);
 		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
 	}
 
