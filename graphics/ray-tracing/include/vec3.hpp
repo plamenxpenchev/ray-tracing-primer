@@ -1,11 +1,16 @@
 #pragma once
 
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
+
+#include "random_generator.hpp"
 
 using std::sqrt;
 
 class vec3 {
+public:
+	double e[3];
 public:
     vec3() : e{ 0,0,0 } {}
     vec3(double e0, double e1, double e2) : e{ e0, e1, e2 } {}
@@ -24,8 +29,16 @@ public:
 
     double length() const;
     double length_squared() const;
-public:
-    double e[3];
+
+	inline static vec3 random() {
+
+		return vec3(random_double(), random_double(), random_double());
+	};
+
+	inline static vec3 random(double min, double max) {
+
+		return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+	};
 };
 
 // Type aliases for vec3
@@ -84,4 +97,14 @@ inline vec3 cross(const vec3& u, const vec3& v) {
 inline vec3 unit_vector(vec3 v) {
 
     return v / v.length();
+}
+
+inline vec3 random_in_unit_sphere() {
+
+	while (true) {
+
+		auto p = vec3::random(-1, 1);
+		if (p.length_squared() >= 1) continue;
+		return p;
+	}
 }
